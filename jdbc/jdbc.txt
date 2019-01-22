@@ -1,0 +1,104 @@
+package main;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+class aa{
+	public aa() {
+		System.out.println("hah");
+	}
+}
+public class main {
+	public static void main(String[] args) {
+		new Frames();
+		try {
+	
+	
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+class Frames extends JFrame{
+		JTextField text1=new JTextField();
+		JTextField text2=new JTextField();
+	public Frames() {
+		this.setTitle("ÅíÓÚêÌµÄ´°¿Ú");
+		this.setSize(600,500);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLayout(null);
+		JButton button1=new JButton("µÇÂ¼");
+		JButton button2=new JButton("ÖØÖÃ");
+	
+		JLabel label1=new JLabel("1");
+		JLabel label2=new JLabel("2");
+		this.add(label1);
+		this.add(label2);
+		this.add(text1);
+		this.add(text2);
+		this.add(button1);
+		this.add(button2);
+		label1.setBounds(20, 20, 100, 50);
+		label2.setBounds(150, 20, 100, 50);
+		text1.setBounds(20, 100, 100, 50);
+		text2.setBounds(150, 100, 100, 50);
+		button1.setBounds(20, 200, 50, 50);
+		button2.setBounds(150, 200, 50, 50);
+		this.setVisible(true);
+		button2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				text1.setText("");
+				text2.setText("");
+			}
+		});
+		button1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				b1action();
+			}
+		});
+		
+	}
+	Connection con;
+	public Connection getconnection() {
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			System.out.println("Êý¾Ý¿â¼ÓÔØ³É¹¦");
+			con=DriverManager.getConnection("jdbc:sqlserver://localhost:1433;Databasename=users", "aa", "123456");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
+	public void b1action() {
+		Connection con=this.getconnection();
+		try {
+		PreparedStatement statement=con.prepareStatement(
+				"select * from logint where a=? and b=?");
+		statement.setString(1,text1.getText());
+		statement.setString(2,text2.getText());
+		ResultSet re=statement.executeQuery();
+		if(re.next()) {
+			System.out.println("µÇÂ¼³Â¹¬");
+		}else
+			System.out.println("µÇÂ¼Ê§°Ü");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
